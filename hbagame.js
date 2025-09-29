@@ -10,27 +10,21 @@
  * hbagame.js
  *
  * hbaGame user interface script
- * 
+ *
  * In this file, you are describing the logic of your user interface, in Javascript language.
  *
  */
 
-define([
-    "dojo","dojo/_base/declare",
-    "ebg/core/gamegui",
-    "ebg/counter"
-],
-function (dojo, declare, gamegui, counter) {
-    return declare("bgagame.hbagame", ebg.core.gamegui, {
-        constructor: function(){
+define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui', 'ebg/counter'], function (dojo, declare, gamegui, counter) {
+    return declare('bgagame.hbagame', ebg.core.gamegui, {
+        constructor: function () {
             console.log('hbagame constructor');
-              
+
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
-
         },
-        
+
         /*
             setup:
             
@@ -43,56 +37,59 @@ function (dojo, declare, gamegui, counter) {
             
             "gamedatas" argument contains all datas retrieved by your "getAllDatas" PHP method.
         */
-        
-        setup: function( gamedatas )
-        {
-            console.log( "Starting game setup" );
+
+        setup: function (gamedatas) {
+            console.log('Starting game setup');
 
             // Example to add a div on the game area
-            this.getGameAreaElement().insertAdjacentHTML('beforeend', `
+            this.getGameAreaElement().insertAdjacentHTML(
+                'beforeend',
+                `
                 <div id="player-tables"></div>
-            `);
-            
+            `
+            );
+
             // Setting up player boards
-            Object.values(gamedatas.players).forEach(player => {
+            Object.values(gamedatas.players).forEach((player) => {
                 // example of setting up players boards
-                this.getPlayerPanelElement(player.id).insertAdjacentHTML('beforeend', `
+                this.getPlayerPanelElement(player.id).insertAdjacentHTML(
+                    'beforeend',
+                    `
                     <div id="player-counter-${player.id}">A player counter</div>
-                `);
+                `
+                );
 
                 // example of adding a div for each player
-                document.getElementById('player-tables').insertAdjacentHTML('beforeend', `
+                document.getElementById('player-tables').insertAdjacentHTML(
+                    'beforeend',
+                    `
                     <div id="player-table-${player.id}">
                         <strong>${player.name}</strong>
                         <div>Player zone content goes here</div>
                     </div>
-                `);
+                `
+                );
             });
-            
+
             // TODO: Set up your game interface here, according to "gamedatas"
-            
- 
+
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
 
-            console.log( "Ending game setup" );
+            console.log('Ending game setup');
         },
-       
 
         ///////////////////////////////////////////////////
         //// Game & client states
-        
+
         // onEnteringState: this method is called each time we are entering into a new game state.
         //                  You can use this method to perform some user interface changes at this moment.
         //
-        onEnteringState: function( stateName, args )
-        {
-            console.log( 'Entering state: '+stateName, args );
-            
-            switch( stateName )
-            {
-            
-            /* Example:
+        onEnteringState: function (stateName, args) {
+            console.log('Entering state: ' + stateName, args);
+
+            switch (stateName) {
+                /* Example:
             
             case 'myGameState':
             
@@ -101,24 +98,20 @@ function (dojo, declare, gamegui, counter) {
                 
                 break;
            */
-           
-           
-            case 'dummy':
-                break;
+
+                case 'dummy':
+                    break;
             }
         },
 
         // onLeavingState: this method is called each time we are leaving a game state.
         //                 You can use this method to perform some user interface changes at this moment.
         //
-        onLeavingState: function( stateName )
-        {
-            console.log( 'Leaving state: '+stateName );
-            
-            switch( stateName )
-            {
-            
-            /* Example:
+        onLeavingState: function (stateName) {
+            console.log('Leaving state: ' + stateName);
+
+            switch (stateName) {
+                /* Example:
             
             case 'myGameState':
             
@@ -127,41 +120,35 @@ function (dojo, declare, gamegui, counter) {
                 
                 break;
            */
-           
-           
-            case 'dummy':
-                break;
-            }               
-        }, 
+
+                case 'dummy':
+                    break;
+            }
+        },
 
         // onUpdateActionButtons: in this method you can manage "action buttons" that are displayed in the
         //                        action status bar (ie: the HTML links in the status bar).
-        //        
-        onUpdateActionButtons: function( stateName, args )
-        {
-            console.log( 'onUpdateActionButtons: '+stateName, args );
-                      
-            if( this.isCurrentPlayerActive() )
-            {            
-                switch( stateName )
-                {
-                 case 'PlayerTurn':    
-                    const playableCardsIds = args.playableCardsIds; // returned by the argPlayerTurn
+        //
+        onUpdateActionButtons: function (stateName, args) {
+            console.log('onUpdateActionButtons: ' + stateName, args);
 
-                    // Add test action buttons in the action status bar, simulating a card click:
-                    playableCardsIds.forEach(
-                        cardId => this.statusBar.addActionButton(_('Play card with id ${card_id}').replace('${card_id}', cardId), () => this.onCardClick(cardId))
-                    ); 
+            if (this.isCurrentPlayerActive()) {
+                switch (stateName) {
+                    case 'PlayerTurn':
+                        const playableCardsIds = args.playableCardsIds; // returned by the argPlayerTurn
 
-                    this.statusBar.addActionButton(_('Pass'), () => this.bgaPerformAction("actPass"), { color: 'secondary' }); 
-                    break;
+                        // Add test action buttons in the action status bar, simulating a card click:
+                        playableCardsIds.forEach((cardId) => this.statusBar.addActionButton(_('Play card with id ${card_id}').replace('${card_id}', cardId), () => this.onCardClick(cardId)));
+
+                        this.statusBar.addActionButton(_('Pass'), () => this.bgaPerformAction('actPass'), { color: 'secondary' });
+                        break;
                 }
             }
-        },        
+        },
 
         ///////////////////////////////////////////////////
         //// Utility methods
-        
+
         /*
         
             Here, you can defines some utility methods that you can use everywhere in your javascript
@@ -169,10 +156,9 @@ function (dojo, declare, gamegui, counter) {
         
         */
 
-
         ///////////////////////////////////////////////////
         //// Player's action
-        
+
         /*
         
             Here, you are defining methods to handle player's action (ex: results of mouse click on 
@@ -183,22 +169,20 @@ function (dojo, declare, gamegui, counter) {
             _ make a call to the game server
         
         */
-        
-        // Example:
-        
-        onCardClick: function( card_id )
-        {
-            console.log( 'onCardClick', card_id );
 
-            this.bgaPerformAction("actPlayCard", { 
+        // Example:
+
+        onCardClick: function (card_id) {
+            console.log('onCardClick', card_id);
+
+            this.bgaPerformAction('actPlayCard', {
                 card_id,
-            }).then(() =>  {                
+            }).then(() => {
                 // What to do after the server call if it succeeded
                 // (most of the time, nothing, as the game will react to notifs / change of state instead)
-            });        
-        },    
+            });
+        },
 
-        
         ///////////////////////////////////////////////////
         //// Reaction to cometD notifications
 
@@ -211,16 +195,15 @@ function (dojo, declare, gamegui, counter) {
                   your hbagame.game.php file.
         
         */
-        setupNotifications: function()
-        {
-            console.log( 'notifications subscriptions setup' );
-            
+        setupNotifications: function () {
+            console.log('notifications subscriptions setup');
+
             // automatically listen to the notifications, based on the `notif_xxx` function on this class.
             this.bgaSetupPromiseNotifications();
-        },  
-        
+        },
+
         // TODO: from this point and below, you can write your game notifications handling methods
-        
+
         /*
         Example:
         
@@ -235,5 +218,5 @@ function (dojo, declare, gamegui, counter) {
         },    
         
         */
-   });             
+    });
 });
