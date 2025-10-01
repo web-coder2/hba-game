@@ -1,6 +1,6 @@
 {OVERALL_GAME_HEADER}
 
-<div id="counter-container">
+<div id="card_place">
     <h3>Счетчик: <span id="counter-value">0</span></h3>
     <button id="increase-btn">Увеличить</button>
 </div>
