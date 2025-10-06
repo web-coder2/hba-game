@@ -46,16 +46,44 @@
 
 /********* You can start writing your CSS below this line: **********/
 
-.white_token {
-    /* background-image: url('img/tokens.png'); */
-    background-position: 0px 0px;
-}
-.black_token {
-    /* background-image: url('img/tokens.png'); */
-    background-position: -20px 0px;
-}
 .token {
     width: 20px;
     height: 20px;
     background-repeat: none;
+}
+
+.first_section {
+    display: flex;
+}
+
+.round_div {
+    background-image: url('./img/2.png');
+    background-position: 0px 0px;
+    width: 30%;
+    background-color: aqua;
+    height: 400px;
+}
+
+.projects_div {
+    background-image: url('/img/1.png');
+    background-position: 0px 0px;
+    width: 30%;
+    background-color: rgb(86, 111, 111);
+    height: 400px;
+}
+
+.actions_div {
+    background-image: url('/img/1.png');
+    background-position: 0px 0px;
+    width: 20%;
+    background-color: rgb(212, 197, 27);
+    height: 400px;
+}
+
+.main_div {
+    background-image: url('/img/1.png');
+    background-position: 0px 0px;
+    width: 20%;
+    background-color: rgb(56, 111, 28);
+    height: 400px;
 }

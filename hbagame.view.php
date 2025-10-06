@@ -40,6 +40,8 @@ class view_hbagame_hbagame extends game_view
 			$this->tpl['YOUR_CÓATLS_STR'] = self::_("Your Cóatls");
 			$this->tpl['YOU_DONT_HAVE_CÓATLS'] = self::_("(You don't have Cóatls yet)");
 			$this->tpl['CURRENT_PLAYER_COLOR'] = $current_player_color;
+
+            // $this->tpl['allPlayers'] = $players;
 		}
 
 

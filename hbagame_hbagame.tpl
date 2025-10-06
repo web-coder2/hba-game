@@ -1,14 +1,22 @@
 {OVERALL_GAME_HEADER}
 
-<!-- <div id="card_place">
-    <h3>Счетчик: <span id="counter-value">0</span></h3>
-    <button id="increase-btn">Увеличить</button>
-</div> -->
+<div>
+    <h3 style="text-align: center">IT Arena {CURRENT_PLAYER_ID}</h3>
+</div>
 
-<div style="background-color: black; color: white">
-    <h3 style="text-align: center">IT Arena</h3>
-    <div id="main">
-        <p>игровое поле {CURRENT_PLAYER_ID}</p>
+<div class="first_section">
+    <div class="round_div">
+        <h4>Жетон маркера раунд</h4>
+    </div>
+    <div class="projects_div">
+        <h4>IT проекты</h4>
+    </div>
+    <div class="actions_div">
+        <h4>События</h4>
+    </div>
+    <div class="main_div">
+        <p>номер раунда:</p>
+        <p>комбинация:</p>
     </div>
 </div>
 
@@ -19,11 +27,5 @@
         document.getElementById('counter-value').innerText = counter;
     });
 </script>
-
-<style>
-    .main {
-        background-image: url('img/1.png');
-    }
-</style>
 
 {OVERALL_GAME_FOOTER}

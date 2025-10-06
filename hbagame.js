@@ -60,15 +60,15 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui', 'ebg/counter'], functi
                 );
 
                 // example of adding a div for each player
-                document.getElementById('player-tables').insertAdjacentHTML(
-                    'beforeend',
-                    `
-                    <div id="player-table-${player.id}">
-                        <strong>${player.name}</strong>
-                        <div>Player zone content goes here</div>
-                    </div>
-                `
-                );
+                // document.getElementById('player-tables').insertAdjacentHTML(
+                //     'beforeend',
+                //     `
+                //     <div id="player-table-${player.id}">
+                //         <strong>${player.name}</strong>
+                //         <div>Player zone content goes here</div>
+                //     </div>
+                // `
+                // );
             });
 
             // TODO: Set up your game interface here, according to "gamedatas"
