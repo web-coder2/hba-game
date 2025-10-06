@@ -57,7 +57,8 @@
 }
 
 .round_div {
-    background-image: url('./img/2.png');
+    background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/1.png');
+    background-size: cover;
     background-position: 0px 0px;
     width: 30%;
     background-color: aqua;
@@ -65,8 +66,10 @@
 }
 
 .projects_div {
-    background-image: url('/img/1.png');
+    background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/2.png');
     background-position: 0px 0px;
+    background-size: cover;
+
     width: 30%;
     background-color: rgb(86, 111, 111);
     height: 400px;
