@@ -1,12 +1,12 @@
 {OVERALL_GAME_HEADER}
 
-<div>
+<!-- <div>
     <h3 style="text-align: center">IT Arena {CURRENT_PLAYER_ID}</h3>
-</div>
+</div> -->
 
 <div class="first_section">
     <div class="round_div">
-        <h4>Жетон маркера раунд</h4>
+        <h4 style="z-index: 9999999">Жетон маркера раунд</h4>
     </div>
     <div class="projects_div">
         <h4>IT проекты</h4>
@@ -14,10 +14,10 @@
     <div class="actions_div">
         <h4>События</h4>
     </div>
-    <div class="main_div">
+    <!-- <div class="main_div">
         <p>номер раунда:</p>
         <p>комбинация:</p>
-    </div>
+    </div> -->
 </div>
 
 <script type="text/javascript">

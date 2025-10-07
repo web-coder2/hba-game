@@ -49,7 +49,7 @@
 .token {
     width: 20px;
     height: 20px;
-    background-repeat: none;
+    background-repeat: no-repeat;
 }
 
 .first_section {
@@ -57,36 +57,43 @@
 }
 
 .round_div {
-    background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/1.png');
-    background-size: cover;
-    background-position: 0px 0px;
-    width: 30%;
-    background-color: aqua;
-    height: 400px;
+    background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/5.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 33%;
+    height: 300px;
+    background-color: green;
+
+    color: white;
+    text-align: center;
+    font-size: 20px;
 }
 
 .projects_div {
     background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/2.png');
-    background-position: 0px 0px;
-    background-size: cover;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 33%;
+    height: 300px;
+    background-color: rgb(142, 234, 142);
 
-    width: 30%;
-    background-color: rgb(86, 111, 111);
-    height: 400px;
+    color: white;
+    text-align: center;
+    font-size: 20px;
 }
 
 .actions_div {
-    background-image: url('/img/1.png');
-    background-position: 0px 0px;
-    width: 20%;
-    background-color: rgb(212, 197, 27);
-    height: 400px;
-}
+    background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/3.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 33%;
+    height: 300px;
+    background-color: green;
 
-.main_div {
-    background-image: url('/img/1.png');
-    background-position: 0px 0px;
-    width: 20%;
-    background-color: rgb(56, 111, 28);
-    height: 400px;
+    color: white;
+    text-align: center;
+    font-size: 20px;
 }
