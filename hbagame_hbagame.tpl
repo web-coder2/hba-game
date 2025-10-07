@@ -20,6 +20,18 @@
     </div> -->
 </div>
 
+<div class="player_section">
+    <div class="player_pad">
+        <h4>Планшет игрока</h4>
+    </div>
+    <div class="player_stats">
+        <h4>Статисткиа игрока</h4>
+        <p>Баджерсы: 100</p>
+        <p>Найм сотрудников: 5</p>
+        <p>выполение задач: 5</p>
+    </div>
+</div>
+
 <script type="text/javascript">
     var counter = 0;
     document.getElementById('increase-btn').addEventListener('click', function () {
