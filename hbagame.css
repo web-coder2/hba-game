@@ -129,8 +129,8 @@
 }
 
 .task-dot {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background-color: red;
     cursor: pointer;
@@ -187,10 +187,13 @@
     color: black;
     font-size: 20px;
     margin-top: -10px;
+    border-radius: 30px;
 }
 
 .task-header h5 {
-    margin-top: 5px;
+    margin-top: 10px;
+    font-size: 18px;
+    font-family: monospace;
 }
 
 /* .task-dot {

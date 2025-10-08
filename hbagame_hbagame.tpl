@@ -64,9 +64,12 @@
     const tasks = [
         { id: 1, title: 'Задача 1', status: 'backlog' },
         { id: 2, title: 'Задача 2', status: 'backlog' },
-        { id: 3, title: 'Задача 3', status: 'inProgress' },
-        { id: 4, title: 'Задача 4', status: 'testing' },
-        { id: 5, title: 'Задача 5', status: 'done' },
+        { id: 3, title: 'Задача 2', status: 'backlog' },
+        { id: 4, title: 'Задача 2', status: 'backlog' },
+        { id: 5, title: 'Задача 2', status: 'backlog' },
+        { id: 6, title: 'Задача 3', status: 'inProgress' },
+        { id: 7, title: 'Задача 4', status: 'testing' },
+        { id: 8, title: 'Задача 5', status: 'done' },
     ];
 
     // Функция отображения задач
