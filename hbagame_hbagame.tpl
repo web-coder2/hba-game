@@ -32,12 +32,86 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    var counter = 0;
-    document.getElementById('increase-btn').addEventListener('click', function () {
-        counter++;
-        document.getElementById('counter-value').innerText = counter;
-    });
+<div class="task-block">
+    <div class="task-status backlog">
+        <div class="task-header">
+            <h5>Бэклог</h5>
+        </div>
+        <div class="tasks-container" id="backlog"></div>
+    </div>
+    <div class="task-status inProgress">
+        <div class="task-header">
+            <h5>В работе</h5>
+        </div>
+        <div class="tasks-container" id="inProgress"></div>
+    </div>
+    <div class="task-status testing">
+        <div class="task-header">
+            <h5>Тестирование</h5>
+        </div>
+        <div class="tasks-container" id="testing"></div>
+    </div>
+    <div class="task-status done">
+        <div class="task-header">
+            <h5>Выполнено</h5>
+        </div>
+        <div class="tasks-container" id="done"></div>
+    </div>
+</div>
+
+<script>
+    // Массив задач
+    const tasks = [
+        { id: 1, title: 'Задача 1', status: 'backlog' },
+        { id: 2, title: 'Задача 2', status: 'backlog' },
+        { id: 3, title: 'Задача 3', status: 'inProgress' },
+        { id: 4, title: 'Задача 4', status: 'testing' },
+        { id: 5, title: 'Задача 5', status: 'done' },
+    ];
+
+    // Функция отображения задач
+    function renderTasks() {
+        // Очистка всех контейнеров
+        document.querySelectorAll('.tasks-container').forEach((container) => {
+            container.innerHTML = '';
+        });
+
+        // Создаем точки для каждой задачи
+        tasks.forEach((task) => {
+            const div = document.createElement('div');
+            div.className = 'task-dot'; // точки всегда красные
+            div.title = task.title; // подсказка
+            div.addEventListener('click', () => {
+                moveTask(task.id);
+            });
+            document.getElementById(task.status).appendChild(div);
+        });
+    }
+
+    // Перемещение задачи по статусам
+    function moveTask(taskId) {
+        const task = tasks.find((t) => t.id === taskId);
+        if (!task) return;
+
+        switch (task.status) {
+            case 'backlog':
+                task.status = 'inProgress';
+                break;
+            case 'inProgress':
+                task.status = 'testing';
+                break;
+            case 'testing':
+                task.status = 'done';
+                break;
+            case 'done':
+                // Можно оставить как есть или сделать возврат
+                break;
+        }
+        renderTasks();
+    }
+
+    // Изначально отображаем задачи
+    renderTasks();
 </script>
 
 {OVERALL_GAME_FOOTER}
