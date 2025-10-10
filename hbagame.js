@@ -1,86 +1,145 @@
 define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui', 'ebg/counter'], function (dojo, declare, gamegui, counter) {
     return declare('bgagame.hbagame', ebg.core.gamegui, {
         constructor: function () {
-            console.log('hbagame constructor');
+            this.moveCountThisTurn = 0;
+            this.tasks = []; // сюда загрузите задачи
         },
 
         setup: function (gamedatas) {
-            console.log('Starting game setup');
+            console.log('Game setup');
 
-            this.getGameAreaElement().insertAdjacentHTML(
-                'beforeend',
-                `
-                <div id="player-tables"></div>
-            `
-            );
+            // Инициализация задач из gamedatas или через AJAX
+            this.tasks = gamedatas.tasks || [];
 
-            var numPlayers = Object.keys(gamedatas.players).length;
-            Object.values(gamedatas.players).forEach((player, index) => {
-                document.getElementById('player-tables').insertAdjacentHTML(
-                    'beforeend',
-                    `
-          <div>
-              <div class="playertablename" style="color:#${player.color};">${player.name}</div>
-              <div class="playertablecard" id="playertablecard_${player.id}"></div>
-              <div class="playertablename" id="hand_score_wrap_${player.id}"><span class="hand_score_label"></span> <span id="hand_score_${player.id}"></span></div>
-          </div>
+            // Создайте контейнер для задач
+            this.getGameAreaElement().insertAdjacentHTML('beforeend', `<div id="tasks_container"></div>`);
 
-          <p>Всего игроков ${numPlayers}</p>
-                      `
-                );
-            });
+            // Отрисуйте задачи
+            this.renderTasks();
 
+            // Настроить уведомления
             this.setupNotifications();
 
-            console.log('Ending game setup');
+            // Восстановите счетчик перемещений
+            this.moveCountThisTurn = 0;
         },
 
-        onEnteringState: function (stateName, args) {
-            console.log('Entering state: ' + stateName, args);
+        renderTasks: function () {
+            const container = document.getElementById('tasks_container');
+            container.innerHTML = '';
 
-            switch (stateName) {
-                case 'dummy':
-                    break;
+            this.tasks.forEach((task) => {
+                const div = document.createElement('div');
+                div.className = 'task-dot';
+                div.title = task.title;
+                div.draggable = true;
+                div.dataset.taskId = task.id;
+                div.addEventListener('dragstart', this.onDragStart.bind(this));
+                div.addEventListener('click', () => this.moveTask(task.id));
+                container.appendChild(div);
+            });
+        },
+
+        onDragStart: function (e) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.taskId);
+        },
+
+        setupDragAndDrop: function () {
+            document.querySelectorAll('.task-status').forEach((statusDiv) => {
+                statusDiv.addEventListener('dragover', (e) => e.preventDefault());
+                statusDiv.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const taskId = parseInt(e.dataTransfer.getData('text/plain'));
+                    const task = this.tasks.find((t) => t.id === taskId);
+                    if (task) {
+                        if (this.moveCountThisTurn >= 4) {
+                            alert('Вы уже переместили 4 задачи за этот ход.');
+                            return;
+                        }
+                        const newStatus = statusDiv.dataset.status;
+                        if (task.status !== newStatus) {
+                            task.status = newStatus;
+                            this.ajaxcall(
+                                '/yourgame/move_task.html',
+                                {
+                                    task_id: task.id,
+                                    new_status: newStatus,
+                                },
+                                this,
+                                function () {
+                                    this.moveCountThisTurn++;
+                                    this.renderTasks();
+                                    this.ajaxcall(
+                                        '/yourgame/notify_task_moved.html',
+                                        {
+                                            task_id: task.id,
+                                            task_title: task.title,
+                                            player_id: this.player_id,
+                                        },
+                                        this,
+                                        function () {}
+                                    );
+                                }
+                            );
+                        }
+                    }
+                });
+            });
+        },
+
+        moveTask: function (taskId) {
+            if (this.moveCountThisTurn >= 4) {
+                alert('Вы уже переместили 4 задачи за этот ход.');
+                return;
             }
-        },
+            const task = this.tasks.find((t) => t.id === taskId);
+            if (!task) return;
 
-        onLeavingState: function (stateName) {
-            console.log('Leaving state: ' + stateName);
+            // пример смены статуса по клику
+            const statuses = ['backlog', 'inProgress', 'testing', 'done'];
+            const currentIdx = statuses.indexOf(task.status);
+            const nextIdx = (currentIdx + 1) % statuses.length;
+            const newStatus = statuses[nextIdx];
 
-            switch (stateName) {
-                case 'dummy':
-                    break;
-            }
-        },
+            this.ajaxcall(
+                '/yourgame/move_task.html',
+                {
+                    task_id: task.id,
+                    new_status: newStatus,
+                },
+                this,
+                function () {
+                    this.moveCountThisTurn++;
+                    task.status = newStatus;
+                    this.renderTasks();
 
-        onUpdateActionButtons: function (stateName, args) {
-            console.log('onUpdateActionButtons: ' + stateName, args);
-
-            if (this.isCurrentPlayerActive()) {
-                switch (stateName) {
-                    case 'PlayerTurn':
-                        const playableCardsIds = args.playableCardsIds;
-
-                        playableCardsIds.forEach((cardId) => this.statusBar.addActionButton(_('Play card with id ${card_id}').replace('${card_id}', cardId), () => this.onCardClick(cardId)));
-
-                        this.statusBar.addActionButton(_('Pass'), () => this.bgaPerformAction('actPass'), { color: 'secondary' });
-                        break;
+                    // уведомление
+                    this.ajaxcall(
+                        '/yourgame/notify_task_moved.html',
+                        {
+                            task_id: task.id,
+                            task_title: task.title,
+                            player_id: this.player_id,
+                        },
+                        this,
+                        function () {}
+                    );
                 }
-            }
-        },
-
-        onCardClick: function (card_id) {
-            console.log('onCardClick', card_id);
-
-            this.bgaPerformAction('actPlayCard', {
-                card_id,
-            }).then(() => {});
+            );
         },
 
         setupNotifications: function () {
-            console.log('notifications subscriptions setup');
+            this.notifqueue.setSynchronous(true);
+            this.notifqueue.onNotification('taskMoved', this, function (notif) {
+                alert('Задача перемещена: ' + notif.args.task_title);
+                // при необходимости обновляйте состояние задач
+            });
+        },
 
-            this.bgaSetupPromiseNotifications();
+        onLeavingState: function (stateName) {
+            if (stateName === 'yourTurnState') {
+                this.moveCountThisTurn = 0;
+            }
         },
     });
 });

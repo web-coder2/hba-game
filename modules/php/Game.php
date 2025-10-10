@@ -35,7 +35,7 @@ class Game extends \Bga\GameFramework\Table
     {
 
         parent::__construct();
-        
+
         $this->initGameStateLabels(
             [
                 "currentHandType" => 10,
@@ -87,6 +87,36 @@ class Game extends \Bga\GameFramework\Table
      * @return int
      * @see ./states.inc.php
      */
+
+
+     public function move_task() {
+        self::checkAction('move_task');
+    
+        $task_id = self::getArg('task_id');
+        $new_status = self::getArg('new_status');
+    
+        // Обновляем задачу
+        $sql = "UPDATE tasks SET status = '$new_status' WHERE id = $task_id";
+        self::DbQuery($sql);
+    
+        // Получаем название задачи
+        $task_title = self::getTaskTitle($task_id);
+        $player_id = self::getCurrentPlayerId();
+    
+        self::notifyAllPlayers('taskMoved', 
+            clienttranslate('${player_name} переместил задачу ${task_title}'), 
+            [
+                'player_name' => self::getPlayerName($player_id),
+                'task_title' => $task_title,
+                'task_id' => $task_id
+            ]
+        );
+    
+        self::ajaxResponse(['status' => 'ok']);
+    }
+
+
+
     public function getGameProgression()
     {
         // TODO: compute and return the game progression
@@ -139,6 +169,9 @@ class Game extends \Bga\GameFramework\Table
         // WARNING: We must only return information visible by the current player.
         $current_player_id = (int) $this->getCurrentPlayerId();
 
+        $result['cardsontable'] = $this->cards->getCardsInLocation('cardsontable');
+
+
         // Get information about players.
         // NOTE: you can retrieve some extra field you added for "player" table in `dbmodel.sql` if you need it.
         $result["players"] = $this->getCollectionFromDb(
@@ -171,6 +204,56 @@ class Game extends \Bga\GameFramework\Table
                 addslashes($player["player_avatar"]),
             ]);
         }
+
+        $this->setGameStateInitialValue('currentHandType', 0);
+
+        // Set current trick color to zero (= no trick color)
+        $this->setGameStateInitialValue('trickColor', 0);
+
+        // Mark if we already played hearts during this hand
+        $this->setGameStateInitialValue('alreadyPlayedHearts', 0);
+
+        // Определение типов карт
+        $this->CARD_TYPES = [
+            2 => ['name' => '2'],
+            3 => ['name' => '3'],
+            4 => ['name' => '4'],
+            5 => ['name' => '5'],
+            6 => ['name' => '6'],
+            7 => ['name' => '7'],
+            8 => ['name' => '8'],
+            9 => ['name' => '9'],
+            10 => ['name' => '10'],
+            11 => ['name' => clienttranslate('J')],
+            12 => ['name' => clienttranslate('Q')],
+            13 => ['name' => clienttranslate('K')],
+            14 => ['name' => clienttranslate('A')]
+        ];
+
+        // Определение типов карт (суккитов)
+        $this->CARD_SUITS = [
+            1 => ['name' => clienttranslate('tech')],
+            2 => ['name' => clienttranslate('manager')],
+            3 => ['name' => clienttranslate('sale')]
+        ];
+
+        // Создаем карты
+        $cards = [];
+        foreach ($this->CARD_SUITS as $suit => $suit_info) {
+            foreach ($this->CARD_TYPES as $value => $info_value) {
+                $cards[] = [
+                    'card_type' => $suit_info['name'], // 'tech', 'manager', 'sale'
+                    'card_type_arg' => (string)$value, // 2-14
+                    'card_location' => 'deck', // или другая локация по вашему сценарию
+                    'card_location_arg' => 1, // например, номер колоды или позиция
+                    'event_type' => null, // добавьте, если потребуется
+                    'event_value' => null // добавьте, если потребуется
+                ];
+            }
+        }
+
+        // Создаем карты в базе данных
+        $this->cards->createCards($cards, 'deck');
 
         // Create players based on generic information.
         //

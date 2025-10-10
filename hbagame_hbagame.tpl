@@ -13,6 +13,12 @@
             <div id="player-tables">
                 <h3>Список всех игроков</h3>
             </div>
+            <div id="playertablecard_">
+                <div id="playertablecard_1"></div>
+                <div id="playertablecard_2"></div>
+                <div id="playertablecard_3"></div>
+                <!-- добавьте столько, сколько у вас игроков -->
+            </div>
         </div>
     </div>
     <div class="actions_div">
