@@ -33,7 +33,18 @@ class Game extends \Bga\GameFramework\Table
      */
     public function __construct()
     {
+
         parent::__construct();
+        
+        $this->initGameStateLabels(
+            [
+                "currentHandType" => 10,
+                "trickColor" => 11,
+                "alreadyPlayedHearts" => 12,
+            ]
+        );;
+
+        $this->cards = $this->deckFactory->createDeck('card');
 
         $this->initGameStateLabels([
             "my_first_global_variable" => 10,

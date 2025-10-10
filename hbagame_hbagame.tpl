@@ -9,7 +9,11 @@
         <h4 style="z-index: 9999999">Жетон маркера раунд</h4>
     </div>
     <div class="projects_div">
-        <h4>IT проекты</h4>
+        <div id="game_play_area">
+            <div id="player-tables">
+                <h3>Список всех игроков</h3>
+            </div>
+        </div>
     </div>
     <div class="actions_div">
         <h4>События</h4>

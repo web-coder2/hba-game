@@ -70,9 +70,10 @@
 }
 
 .projects_div {
-    background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/2.png');
+    /* background-image: url('https://studio.boardgamearena.com:8084/data/themereleases/current/games/hbagame/999999-9999/img/2.png'); */
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    background-color: black;
     background-position: center;
     width: 33%;
     height: 300px;
